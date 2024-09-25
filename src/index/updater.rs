@@ -519,6 +519,7 @@ impl<'index> Updater<'index> {
       transaction_buffer: Vec::new(),
       transaction_id_to_transaction: &mut transaction_id_to_transaction,
       unbound_inscriptions,
+      first_in_block: true,
     };
 
     let mut coinbase_inputs = VecDeque::new();
@@ -688,6 +689,8 @@ impl<'index> Updater<'index> {
         let vout = u32::try_from(vout).unwrap();
         utxo_cache.insert(OutPoint { txid: *txid, vout }, output_utxo_entry);
       }
+
+      inscription_updater.end_block()?;
     }
 
     if index_inscriptions {
